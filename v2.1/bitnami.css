@@ -1,0 +1,24 @@
+/* Ukrywanie elementów modułów (górny i dolny) */
+.module_top,
+.module_bottom {
+    visibility: hidden;
+    /* Elementy są ukryte, ale nadal zajmują miejsce w układzie */
+}
+
+/* Tabele - usunięcie obramowania */
+table {
+    border: 0 !important;
+    /* Wyłączenie obramowania tabel */
+}
+
+/* Obrazy wewnątrz kontenera 'module_content' */
+.module_content img {
+    min-width: 70px;
+    /* Minimalna szerokość obrazu ustawiona na 70px */
+}
+
+/* Nagłówki H2 wewnątrz 'module_content' */
+.module_content h2 {
+    font-size: 30px;
+    /* Rozmiar tekstu nagłówka */
+}

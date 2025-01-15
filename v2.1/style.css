@@ -1,0 +1,303 @@
+/* Zmienne globalne */
+:root {
+    --primary-color: #03602a;
+    --secondary-color: #263a3a;
+    --hover-color: #11e36c;
+    --text-color: rgba(255, 255, 255, 0.929);
+    --font-family: Arial, sans-serif;
+    --background-color: #cbeaea;
+}
+
+/* Styl dla całego ciała strony */
+body {
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    margin: 0;
+    padding-top: 60px; /* Odstęp na wysokość paska nawigacyjnego */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Styl dla paska nawigacyjnego */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-color);
+    padding:  0;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Styl dla menu */
+.meni {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.meni a,
+.meni button {
+    color: var(--text-color);
+    text-decoration: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.meni a:hover,
+.meni button:hover {
+    background-color: var(--hover-color);
+    color: rgb(8, 8, 8);
+}
+
+.meni a:focus,
+.meni button:focus {
+    outline: 2px solid var(--hover-color);
+    outline-offset: 2px;
+}
+
+/* Styl dla bloków testowych */
+.test-block,
+.test-block2,
+.test-block3 {
+    width: 100px;
+    border: 2px solid rgb(22, 215, 225);
+    background: rgb(22, 215, 225);
+    text-align: center;
+    color: #000000;
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+    user-select: none;
+}
+
+.test-block:hover,
+.test-block2:hover,
+.test-block3:hover {
+    transform: scale(1.05);
+}
+
+/* Styl dla zdjęć */
+.foto_1 {
+    width: 400px;
+    height: auto;
+}
+
+.format_foto {
+    width: 800px;
+    height: 500px;
+    object-fit: cover;
+}
+
+/* Centrowanie kontenera */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh;
+}
+
+/* Styl dla zegarka */
+#zegarek {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Styl dla daty */
+#data {
+    font-size: 18px;
+    margin-top: 5px;
+}
+
+/* Styl dla nagłówka */
+.tytle {
+    text-align: center;
+    height: 50px;
+}
+
+/* Styl dla daty */
+.my_date {
+    height: 10px;
+}
+
+/* Styl dla wszystkich divów */
+div {
+    color: black;
+    font-family: var(--font-family);
+    font-size: 15px;
+    text-align: left;
+}
+
+/* Media queries dla responsywności */
+@media (max-width: 768px) {
+    .meni {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .meni a,
+    .meni button {
+        padding: 8px;
+        margin: 5px 0;
+    }
+
+    .container {
+        flex-direction: column;
+        height: auto;
+    }
+}
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 5px 0;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+}
+
+.formularz-kontaktowy {
+    width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding-right: 40px;
+}
+
+.formularz-kontaktowy label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.formularz-kontaktowy input,
+.formularz-kontaktowy textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.formularz-kontaktowy button {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.formularz-kontaktowy button:hover {
+    background-color: #0056b3;
+}
+
+/* Styl dla formularza dodawania produktów */
+.formularz-dodawania-produktow {
+    width: 400px;
+    margin: 30px auto;
+    padding: 20px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.formularz-dodawania-produktow label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.formularz-dodawania-produktow input,
+.formularz-dodawania-produktow select,
+.formularz-dodawania-produktow textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.formularz-dodawania-produktow input[type="submit"] {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.formularz-dodawania-produktow input[type="submit"]:hover {
+    background-color: var(--hover-color);
+}
+
+/* Styl dla listy produktów */
+.lista-produktow {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Styl dla pojedynczego produktu */
+.produkt {
+    border: 1px solid #ccc;
+    padding: 40px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+}
+
+/* Styl dla tytułu produktu */
+.produkt h3 {
+    margin: 10px 0;
+}
+
+
+/* Styl dla przycisku "Dodaj do koszyka" */
+.przycisk-kup {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: auto; /* Ajust width as needed */
+    display: block; /* Make it a block element to take full width if needed */
+    margin: auto; /* Top and bottom margin */
+    text-align: center;
+    margin-top: 20px;
+}
+
+.przycisk-kup:hover {
+    background-color: var(--hover-color);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Optional: Adds shadow on hover */
+}
