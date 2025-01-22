@@ -15,6 +15,10 @@
             <li><a href="index.php?idp=o_mnie">O mnie</a></li>
             <li><a href="index.php?idp=filmy">Filmy</a></li>
             <li><a href="index.php?idp=kontakt">Kontakt</a></li>
-            <li><a href="index.php?idp=koszyk">Koszyk</a></li>
+            <li><a href="show_koszyk.php">Koszyk</a></li>
+            <li><a href="manage_categories.php">Zarządzaj kategoriami</a></li>
+            <a href="http://localhost/v2.1/admin/admin.php?action=logout" style="color: red; font-weight: bold;">Wyloguj</a>
         </ul>
     </nav>  
+
+    

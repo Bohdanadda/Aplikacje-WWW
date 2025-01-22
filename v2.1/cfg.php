@@ -12,4 +12,8 @@ try {
 } catch (PDOException $e) {
     die("Błąd połączenia z bazą danych: " . $e->getMessage());
 }
+
+// Dane logowania do panelu admina
+$login = 'admin'; // Login administratora
+$pass = 'haslo123'; // Hasło administratora
 ?>

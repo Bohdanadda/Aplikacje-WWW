@@ -1,26 +1,37 @@
 <?php
-include('cfg.php'); // Używa połączenia z bazą danych zdefiniowanego w cfg.php
+include('cfg.php'); // Połączenie z bazą danych
+require_once 'kategorie.php'; // Klasa Produkty
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    require_once 'kategorie.php'; // Zakładam, że klasy są w tym samym pliku
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $produkty = new Produkty($pdo);
 
-    $tytul = $_POST['tytul'];
-    $opis = $_POST['opis'];
-    $cena_netto = $_POST['cena_netto'];
-    $vat = $_POST['vat'];
-    $ilosc = $_POST['ilosc'];
-    $status = $_POST['status'];
-    $kategoria = $_POST['kategoria'];
-    $zdjecie = $_POST['zdjecie'];
+    // Pobierz dane z formularza
+    $tytul = $_POST['tytul'] ?? null;
+    $opis = $_POST['opis'] ?? null;
+    $cena_netto = $_POST['cena_netto'] ?? null;
+    $vat = $_POST['vat'] ?? null;
+    $ilosc = $_POST['ilosc'] ?? null; // Ilość na magazynie
+    $status = $_POST['status'] ?? null;
+    $kategoria = $_POST['kategoria'] ?? null;
+    $zdjecie = '';
+
+    // Obsługa przesyłania zdjęcia
+    if (isset($_FILES['zdjecie']) && $_FILES['zdjecie']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'img/';
+        $fileName = uniqid() . '_' . basename($_FILES['zdjecie']['name']);
+        $uploadFile = $uploadDir . $fileName;
+
+        if (move_uploaded_file($_FILES['zdjecie']['tmp_name'], $uploadFile)) {
+            $zdjecie = $fileName;
+        }
+    }
 
     try {
-        $produkty->DodajProdukt($tytul, $opis, $cena_netto, $vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie);
-        $_SESSION['message'] = "Produkt został pomyślnie dodany.";
+        $produkty->DodajProdukt($tytul, $opis, $cena_netto, $vat, $ilosc, $status, $kategoria, null, $zdjecie);
+        $_SESSION['message'] = "Produkt został dodany.";
     } catch (PDOException $e) {
-        $_SESSION['error'] = "Nie udało się dodać produktu: " . $e->getMessage();
+        $_SESSION['error'] = "Błąd: " . $e->getMessage();
     }
-    header('Location: index.php?idp=glowna'); // Przekierowanie z powrotem na stronę główną
+    header('Location: index.php?idp=glowna');
     exit();
 }
-?>

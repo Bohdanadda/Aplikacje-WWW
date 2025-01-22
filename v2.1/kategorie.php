@@ -48,9 +48,12 @@ class Produkty {
         $this->pdo = $pdo;
     }
 
-    public function DodajProdukt($tytul, $opis, $cena_netto, $podatek_vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie) {
-        $stmt = $this->pdo->prepare("INSERT INTO produkty (tytul, opis, cena_netto, podatek_vat, ilosc_dostepnych_sztuk, status_dostepnosci, kategoria, gabaryt, zdjecie) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$tytul, $opis, $cena_netto, $podatek_vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie]);
+    public function DodajProdukt($tytul, $opis, $cena_netto, $vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie) {
+        $stmt = $this->pdo->prepare("
+            INSERT INTO produkty (tytul, opis, cena_netto, vat, ilosc, status, kategoria, gabaryt, zdjecie, data_utworzenia, data_modyfikacji, data_wygasniecia) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), NULL)
+        ");
+        $stmt->execute([$tytul, $opis, $cena_netto, $vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie]);
     }
 
     public function UsunProdukt($id) {
@@ -58,30 +61,59 @@ class Produkty {
         $stmt->execute([$id]);
     }
 
-    public function EdytujProdukt($id, $tytul, $opis, $cena_netto, $podatek_vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie) {
-        $stmt = $this->pdo->prepare("UPDATE produkty SET tytul = ?, opis = ?, cena_netto = ?, podatek_vat = ?, ilosc_dostepnych_sztuk = ?, status_dostepnosci = ?, kategoria = ?, gabaryt = ?, zdjecie = ? WHERE id = ?");
-        $stmt->execute([$tytul, $opis, $cena_netto, $podatek_vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie, $id]);
+    public function EdytujProdukt($id, $tytul, $opis, $cena_netto, $vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie) {
+        $stmt = $this->pdo->prepare("
+            UPDATE produkty SET tytul = ?, opis = ?, cena_netto = ?, vat = ?, ilosc = ?, status = ?, kategoria = ?, gabaryt = ?, zdjecie = ?, data_modyfikacji = NOW() WHERE id = ?
+        ");
+        $stmt->execute([$tytul, $opis, $cena_netto, $vat, $ilosc, $status, $kategoria, $gabaryt, $zdjecie, $id]);
     }
 
     public function PokazProdukty() {
-        $stmt = $this->pdo->query("SELECT * FROM produkty");
-        $produkty = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($produkty as $produkt) {
-            echo "<div class='produkt'>";
-            echo "<h3>" . htmlspecialchars($produkt['tytul']) . "</h3>";
-            echo "<p>" . htmlspecialchars($produkt['opis']) . "</p>";
-            echo "<p>Cena: " . number_format($produkt['cena_netto'], 2) . " zł</p>";
-            // Formularz dodawania do koszyka
-            echo '<form method="post" action="index.php">';
-            echo '<input type="hidden" name="product_id" value="' . $produkt['id'] . '">';
-            echo 'Ilość: <input type="number" name="quantity" value="1"><br>';
-            echo '<input type="hidden" name="price" value="' . $produkt['cena_netto'] . '">';
-            echo '<button type="submit" class="przycisk-kup" name="add_to_cart">Dodaj do koszyka</button>';
-            echo '</form>';
-            echo "</div>";
+    $stmt = $this->pdo->query("SELECT * FROM produkty");
+    $produkty = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo '<div class="lista-produktow">';
+    foreach ($produkty as $produkt) {
+        echo "<div class='produkt'>";
+        echo "<h3>" . htmlspecialchars($produkt['tytul']) . "</h3>";
+        echo "<p>" . htmlspecialchars($produkt['opis']) . "</p>";
+        echo "<p>Cena: " . number_format($produkt['cena_netto'], 2) . " zł</p>";
+        echo "<p>Dostępna ilość: " . htmlspecialchars($produkt['ilosc']) . "</p>";
+        
+        // Wyświetlanie zdjęcia, jeśli istnieje
+        if (!empty($produkt['zdjecie'])) {
+            echo "<img src='img/" . htmlspecialchars($produkt['zdjecie']) . "' alt='" . htmlspecialchars($produkt['tytul']) . "' style='max-width: 100%; height: auto;'><br>";
         }
+
+        // Formularz dodawania do koszyka
+        echo '<form method="post" action="index.php">';
+        echo '<input type="hidden" name="product_id" value="' . $produkt['id'] . '">';
+        echo 'Ilość: <input type="number" name="quantity" value="1" min="1" max="' . htmlspecialchars($produkt['ilosc']) . '"><br>';
+        echo '<button type="submit" class="przycisk-kup" name="add_to_cart">Dodaj do koszyka</button>';
+        echo '</form>';
+        
+        // Formularz usuwania produktu
+        echo '<form method="post" action="index.php" style="margin-top: 10px;">';
+        echo '<input type="hidden" name="product_id" value="' . $produkt['id'] . '">';
+        echo '<button type="submit" class="przycisk-kup" name="delete_product">Usuń produkt</button>';
+        echo '</form>';
+
+        echo "</div>";
     }
-    
+    echo '</div>';
 }
 
+}
+
+// Obsługa usuwania produktu
+if (isset($_POST['delete_product'])) {
+    $productId = $_POST['product_id'] ?? null;
+    if ($productId) {
+        $produkty = new Produkty($pdo);
+        $produkty->UsunProdukt($productId);
+        echo "Produkt został usunięty.";
+    } else {
+        echo "Błąd: Nie podano ID produktu.";
+    }
+}
 ?>
